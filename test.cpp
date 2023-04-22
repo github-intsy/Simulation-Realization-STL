@@ -4,10 +4,14 @@
 #include<vector>
 #include<assert.h>
 using namespace std;
+#include"list.h"
+#include"string.h"
 #include"vector.h"
 int main()
 {
-	gsy_study_vector::test01();
+	gsy_study_vector::test02();
+	gsy_study_list::Test();
+	gsy::Test02();
 	/*vector<int> v1;
 	v1.push_back(10);
 	v1.push_back(20);

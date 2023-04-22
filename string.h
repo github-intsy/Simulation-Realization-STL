@@ -199,7 +199,7 @@ namespace gsy
 		size_t _capacity;
 	};
 
-	void Test01()
+	void Test02()
 	{
 		string s1("hello");
 		string s2(s1);

@@ -172,7 +172,7 @@ namespace gsy_study_vector
 		iterator _end_of_storage;	//最大内存
 	};
 
-	void test01()
+	void test02()
 	{
 		vector<int> v;
 		v.push_back(1);
