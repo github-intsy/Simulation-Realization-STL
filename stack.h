@@ -1,7 +1,7 @@
 #pragma once
 namespace gsy_study_stack
 {
-	template<class T, class Container>
+	template<class T, class Container = list<T>>
 	class stack
 	{
 	public:
@@ -31,7 +31,7 @@ namespace gsy_study_stack
 	};
 	void test_stack()
 	{
-		stack<int, list<int>> st;
+		stack<int> st;
 		st.push(1);
 		st.push(2);
 		st.push(3);
