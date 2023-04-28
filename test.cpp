@@ -9,7 +9,8 @@ using namespace std;
 #include"string.h"
 #include"vector.h"
 #include"stack.h"
+#include"queue.h"
 int main()
 {
-	gsy_study_stack::test_stack();
+	gsy_study_queue::test_queue();
 }
