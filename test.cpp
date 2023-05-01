@@ -10,7 +10,8 @@ using namespace std;
 #include"vector.h"
 #include"stack.h"
 #include"queue.h"
+#include"priority_queue.h"
 int main()
 {
-	gsy_study_queue::test_queue();
+	gsy_study_priority_queue::test();
 }
