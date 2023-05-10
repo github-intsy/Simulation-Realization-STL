@@ -11,7 +11,8 @@ using namespace std;
 #include"stack.h"
 #include"queue.h"
 #include"priority_queue.h"
+#include"BSTree.h"
 int main()
 {
-	gsy_study_priority_queue::test();
+	gsy_study_BSTree::test();
 }

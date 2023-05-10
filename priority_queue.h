@@ -54,7 +54,11 @@ namespace gsy_study_priority_queue
 			return _con.empty();
 		}
 
-		void size()
+		size_t size()
+		{
+			return _con.size();
+		}
+		const size_t size() const
 		{
 			return _con.size();
 		}
