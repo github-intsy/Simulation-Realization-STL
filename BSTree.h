@@ -92,6 +92,7 @@ namespace gsy_study_BSTree
 					return false;
 				}
 			}
+			//第一种情况: 删除的节点左边为空,右边不为空 -> parent指向cur->right
 			if (cur->_left == nullptr)
 			{
 				if (parent == nullptr)
@@ -113,6 +114,7 @@ namespace gsy_study_BSTree
 				cur = nullptr;
 				return true;
 			}
+			//第二种情况:删除的节点左边不为空,右边为空 -> parent指向cur->left
 			else if (cur->_right == nullptr)
 			{
 				if (parent == nullptr)
@@ -134,6 +136,7 @@ namespace gsy_study_BSTree
 				cur = nullptr;
 				return true;
 			}
+			//第三种情况:删除的节点左右都不为空
 			else
 			{
 				Node* p = nullptr;
