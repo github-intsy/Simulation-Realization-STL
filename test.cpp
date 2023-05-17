@@ -10,9 +10,10 @@ using namespace std;
 #include"vector.h"
 #include"stack.h"
 #include"queue.h"
-#include"priority_queue.h"
+//#include"priority_queue.h"
 #include"BSTree.h"
+#include"AVLTree.h"
 int main()
 {
-	gsy_study_BSTree::test();
+	
 }
