@@ -15,5 +15,5 @@ using namespace std;
 #include"AVLTree.h"
 int main()
 {
-	
+	test();
 }
