@@ -13,6 +13,7 @@ using namespace std;
 //#include"priority_queue.h"
 #include"BSTree.h"
 #include"AVLTree.h"
+#include"RBTree.h"
 int main()
 {
 	test();
