@@ -5,48 +5,53 @@ enum Color
 	RED
 };
 
-template<class K, class V>
+template<class T>
 struct RBTreeNode
 {
-	RBTreeNode(const pair<K, V>& kv)
+	RBTreeNode(const T& t)
 		:_left(nullptr)
 		, _right(nullptr)
 		, _parent(nullptr)
-		, _kv(kv)
+		, _data(t)
 		, _col(RED)
 	{}
-	RBTreeNode<K, V>* _left;
-	RBTreeNode<K, V>* _right;
-	RBTreeNode<K, V>* _parent;
-	pair<K, V> _kv;
+	RBTreeNode<T>* _left;
+	RBTreeNode<T>* _right;
+	RBTreeNode<T>* _parent;
+	T _data;
 	Color _col;
 	
 };
 
-template<class K, class V>
+template<class K, class T, class KofT>
 class RBTree
 {
-	typedef RBTreeNode<K, V> Node;
+	typedef RBTreeNode<T> Node;
 public:
-	bool insert(const pair<K, V>& kv)
+	RBTree(Node* n = nullptr)
+		:_root(n)
+	{}
+
+	bool insert(const T& t)
 	{
 		if (_root == nullptr)
 		{
-			_root = new Node(kv);
+			_root = new Node(t);
 			_root->_col = BLACK;
 			return true;
 		}
 
 		Node* cur = _root;
 		Node* parent = nullptr;
+		KofT koft;
 		while (cur)
 		{
-			if (cur->_kv.first > kv.first)
+			if (koft(cur->_data) > koft(t))
 			{
 				parent = cur;
 				cur = cur->_left;
 			}
-			else if (cur->_kv.first < kv.first)
+			else if (koft(cur->_data) < koft(t))
 			{
 				parent = cur;
 				cur = cur->_right;
@@ -57,8 +62,8 @@ public:
 			}
 		}
 		//将新节点连接起来,默认是红色
-		cur = new Node(kv);
-		if (parent->_kv.first < kv.first)
+		cur = new Node(t);
+		if (koft(parent->_data) < koft(t))
 		{
 			parent->_right = cur;
 			cur->_parent = parent;
@@ -96,7 +101,7 @@ public:
 				//uncle不存在 or uncle存在且为黑
 				else
 				{
-					//情况3: 双旋
+					//情况3: 双旋 -> 变为单旋
 					if (cur == parent->_right)
 					{
 						RotateL(parent);
@@ -107,6 +112,38 @@ public:
 					RotateR(grandfather);
 					grandfather->_col = RED;
 					parent->_col = BLACK;
+					
+					break;
+				}
+			}
+			else if(parent == grandfather->_right)
+			{
+				Node* uncle = grandfather->_left;
+				//情况1: uncle存在且为红
+				if (uncle && uncle->_col == RED)
+				{
+					parent->_col = uncle->_col = BLACK;
+					grandfather->_col = RED;
+					
+					cur = grandfather;
+					parent = cur->_parent;
+				}
+				//2. uncle不存在,或者为黑
+				//情况2和情况3
+				else
+				{
+					if (cur == parent->_left)
+					{
+						RotateR(parent);
+						swap(cur, parent);
+					}
+
+					RotateL(grandfather);
+					if (uncle)
+					{
+						uncle->_col = RED;
+					}
+					break;
 				}
 			}
 		}
@@ -176,6 +213,24 @@ public:
 			subL->_parent = prev;
 		}
 	}
+	
+	void _show(Node* root)
+	{
+		if (root == nullptr)
+			return;
+		static KofT koft;
+		_show(root->_left);
+		cout << koft(root->_data) << ' ';
+		_show(root->_right);
+	}
+
+	void show()
+	{
+		_show(_root);
+	}
+
+
 private:
-	Node _root;
+	Node* _root;
+	
 };
