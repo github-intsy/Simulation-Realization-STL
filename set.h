@@ -13,14 +13,11 @@ namespace gsy_study_set
 		};
 
 	public:
-		bool Insert(const K& k)
+		typedef typename RBTree<K, K, SetkOfT>::Iterator iterator;
+
+		pair<iterator,bool> Insert(const K& k)
 		{
 			return _rb.insert(k);
-		}
-		
-		void show()
-		{
-			_rb.show();
 		}
 
 	private:
@@ -36,6 +33,5 @@ namespace gsy_study_set
 		s.Insert(29);
 		s.Insert(23);
 		s.Insert(43);
-		s.show();
 	}
 }

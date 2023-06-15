@@ -19,7 +19,7 @@ using namespace std;
 #include"set.h"
 int main()
 {
-	gsy_study_set::test_set();
+	//gsy_study_set::test_set();
 	gsy_study_map::test_map();
 	/*map<int, int> m;
 	m.insert(make_pair(1, 4));

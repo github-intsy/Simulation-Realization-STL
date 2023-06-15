@@ -10,18 +10,30 @@ namespace gsy_study_map
 			{
 				return p.first;
 			}
-			
 		};
 	public:
 
-		bool Insert(const pair<K,V>& t)
+		typedef typename RBTree<K,pair<K,V>,MapKOfV>::Iterator iterator;
+
+		iterator begin()
+		{
+			return _rb.begin();
+		}
+
+		iterator end()
+		{
+			return _rb.end();
+		}
+
+		pair<iterator,bool> Insert(const pair<K,V>& t)
 		{
 			return _rb.insert(t);
 		}
 		
-		void show()
+		V& operator[](const K& k)
 		{
-			_rb.show();
+			pair<iterator,bool> it = _rb.insert(make_pair(k,V()));
+			return it.first->second;
 		}
 
 	private:
@@ -30,7 +42,7 @@ namespace gsy_study_map
 
 	void test_map()
 	{
-		map<int, int> m;
+		/*map<int, int> m;
 		m.Insert(make_pair(1, 2));
 		m.Insert(make_pair(4, 4));
 		m.Insert(make_pair(56, 34));
@@ -38,6 +50,25 @@ namespace gsy_study_map
 		m.Insert(make_pair(65, 64));
 		m.Insert(make_pair(86, 344));
 		m.Insert(make_pair(23, 34));
-		m.show();
+		map<int, int>::iterator it = m.begin();
+		while (it != m.end())
+		{
+			cout << it->first << ':' << it->second << endl;
+			++it;
+		}*/
+		string strs[] = { "西瓜","樱桃","西瓜","苹果","西瓜","西瓜","西瓜","苹果" };
+		map<string, int> countMap;
+		for (auto& str : strs)   //使用pair对象
+		{
+			pair<map<string, int>::iterator, bool> ret = countMap.Insert(make_pair(str, 1));
+			if (ret.second == false)
+			{
+				ret.first->second++;
+			}
+		}
+		for (auto& map : countMap)
+		{
+			cout << map.first << ':' << map.second << endl;
+		}
 	}
 }

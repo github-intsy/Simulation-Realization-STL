@@ -22,28 +22,115 @@ struct RBTreeNode
 	Color _col;
 	
 };
+/*map<int, int> m;
+	m.insert(make_pair(1, 4));
+	m.insert(make_pair(5, 4));
+	m.insert(make_pair(19, 4));
+	map<int, int>::iterator it = m.begin();
+	while (it != m.end())
+	{
+		cout << it->first << ' ' << it->second << endl;
+		++it;
+	}*/
+template<class T, class Ref, class Ptr>
+struct __iterator
+{
+	typedef RBTreeNode<T> Node;
+	typedef __iterator<T, Ref, Ptr> self;
+	Node* _node;
+	Ref operator*()
+	{
+		return _node->_data;
+	}
+
+	Ptr operator->()
+	{
+		return &_node->_data;
+	}
+
+	__iterator(Node* node)
+		:_node(node)
+	{}
+
+	self& operator++()
+	{
+		//1. 右节点不为空, 获得右节点最左边的那个节点
+		//2. 右节点为空, 判断到它为父节点左子树的那个父节点,然后再迭代到最左边的那个节点
+		if (_node->_right)
+		{
+			_node = _node->_right;
+			while (_node && _node->_left)
+			{
+				_node = _node->_left;
+			}
+		}
+		else
+		{
+			Node* parent = _node->_parent;
+			Node* cur = _node;
+			while (parent && cur == parent->_right)
+			{
+				cur = parent;
+				parent = parent->_parent;
+			}
+			_node = parent;
+		}
+		return *this;
+	}
+
+	bool operator!=(const self& node)
+	{
+		return _node != node._node;
+	}
+
+	bool operator==(const self& node)
+	{
+		return _node == node._node;
+	}
+};
 
 template<class K, class T, class KofT>
 class RBTree
 {
 	typedef RBTreeNode<T> Node;
+	
 public:
+
+	typedef __iterator<T, T&, T*> Iterator;
+	typedef __iterator<T, const T&, const T*> const_Iterator;
+
 	RBTree(Node* n = nullptr)
 		:_root(n)
 	{}
 
-	bool insert(const T& t)
+	Iterator begin()
+	{
+		Node* cur = _root;
+		while (cur && cur->_left)
+		{
+			cur = cur->_left;
+		}
+		return Iterator(cur);
+	}
+
+	Iterator end()
+	{
+		return Iterator(nullptr);
+	}
+
+	pair<Iterator,bool> insert(const T& t)
 	{
 		if (_root == nullptr)
 		{
 			_root = new Node(t);
 			_root->_col = BLACK;
-			return true;
+			return make_pair(Iterator(_root), true);
 		}
 
 		Node* cur = _root;
 		Node* parent = nullptr;
 		KofT koft;
+		//查找合适的位置
 		while (cur)
 		{
 			if (koft(cur->_data) > koft(t))
@@ -58,11 +145,12 @@ public:
 			}
 			else
 			{
-				return false;
+				return make_pair(Iterator(cur), false);
 			}
 		}
 		//将新节点连接起来,默认是红色
 		cur = new Node(t);
+		Node* newNode = cur;
 		if (koft(parent->_data) < koft(t))
 		{
 			parent->_right = cur;
@@ -77,11 +165,11 @@ public:
 		//判断parent是grandfather的左节点还是右节点
 		while (parent->_col == RED)
 		{
-			//未解决->如果树的深度为2->如何解决
+			
 			Node* grandfather = parent->_parent;
 			if (!grandfather)
 			{
-				return true;
+				return make_pair(Iterator(cur), true);
 			}
 			//如果是左节点
 			if (parent == grandfather->_left)
@@ -148,7 +236,7 @@ public:
 			}
 		}
 		_root->_col = BLACK;
-		return true;
+		return make_pair(Iterator(newNode), true);
 	}
 
 	void RotateL(Node* parent)
@@ -214,21 +302,6 @@ public:
 		}
 	}
 	
-	void _show(Node* root)
-	{
-		if (root == nullptr)
-			return;
-		static KofT koft;
-		_show(root->_left);
-		cout << koft(root->_data) << ' ';
-		_show(root->_right);
-	}
-
-	void show()
-	{
-		_show(_root);
-	}
-
 
 private:
 	Node* _root;
