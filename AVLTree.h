@@ -35,6 +35,7 @@ public:
 		}
 		Node* parent = nullptr;
 		Node* cur = _root;
+		//找到符合规则的位置
 		while (cur)
 		{
 			if (cur->_kv.first > pa.first)
@@ -53,7 +54,7 @@ public:
 				return false;
 			}
 		}
-
+		//在指定位置插入节点
 		cur = new Node(pa);
 		if (parent->_kv.first > pa.first)
 		{
@@ -69,7 +70,7 @@ public:
 		{
 			return false;
 		}
-
+		//调节平衡因子,进行旋转
 		while (parent)
 		{
 			if (cur == parent->_left)
